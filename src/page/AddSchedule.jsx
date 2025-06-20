@@ -10,7 +10,17 @@ const AddSchedule = () => {
       date: form.date.value,
       time: form.time.value,
     };
-    console.log(schedule.date); // You were printing the date in your console
+
+    // now fetching data from api
+    fetch("http://localhost:5000/schedule", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(schedule),
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   };
 
   return (

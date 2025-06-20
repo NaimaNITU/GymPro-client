@@ -1,6 +1,44 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { FaEdit, FaTrash, FaCheck } from "react-icons/fa"; // Import icons
+import Swal from "sweetalert2";
 
 const AllSchedule = () => {
+  const [schedules, setSchedules] = useState([]);
+
+  useEffect(() => {
+    fetch("http://localhost:5000/schedule")
+      .then((res) => res.json())
+      .then((data) => setSchedules(data));
+  }, []);
+
+  const handleUpdate = (id) => {
+    console.log("Update schedule:", id);
+  };
+
+  const handleDelete = (id) => {
+    // console.log("Delete schedule:", id);
+    // Add  delete logic here
+    fetch(`http://localhost:5000/schedule/${id}`, {
+      method: "DELETE",
+      headers: {
+        "content-type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.deletedCount > 0) {
+          Swal.fire("Deleted!");
+          const remaining = schedules.filter((schedule) => schedule._id !== id);
+          setSchedules(remaining);
+        }
+      });
+  };
+
+  const handleMarkDone = (id) => {
+    console.log("Mark as done:", id);
+    // Add your done logic here
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 px-4 py-10">
       <div className="max-w-6xl mx-auto bg-white p-6 rounded-md shadow">
@@ -28,12 +66,38 @@ const AllSchedule = () => {
               </tr>
             </thead>
             <tbody>
-              {/* Dummy Row (empty for now) */}
-              <tr className="border-t">
-                <td className="px-4 py-4 text-center" colSpan="6">
-                  {/* You can show "No Data" message or leave it empty */}
-                </td>
-              </tr>
+              {schedules.map((schedule, index) => (
+                <tr key={schedule._id}>
+                  <td className="border px-4 py-2">{index + 1}</td>
+                  <td className="border px-4 py-2">{schedule.title}</td>
+                  <td className="border px-4 py-2">{schedule.dayName}</td>
+                  <td className="border px-4 py-2">{schedule.date}</td>
+                  <td className="border px-4 py-2">{schedule.time}</td>
+                  <td className="border px-4 py-3 flex gap-2">
+                    <button
+                      onClick={() => handleUpdate(schedule._id)}
+                      className="text-blue-500 hover:text-blue-700"
+                      title="Update"
+                    >
+                      <FaEdit />
+                    </button>
+                    <button
+                      onClick={() => handleDelete(schedule._id)}
+                      className="text-red-500 hover:text-red-700"
+                      title="Delete"
+                    >
+                      <FaTrash />
+                    </button>
+                    <button
+                      onClick={() => handleMarkDone(schedule._id)}
+                      className="text-green-500 hover:text-green-700"
+                      title="Done"
+                    >
+                      <FaCheck />
+                    </button>
+                  </td>
+                </tr>
+              ))}
             </tbody>
           </table>
         </div>
