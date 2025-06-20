@@ -25,6 +25,7 @@ const Navbar = () => {
             All Schedule
           </NavLink>
         </li>
+
         <li>
           <NavLink to="/signup" className={navLinkClass}>
             Sign Up

@@ -5,6 +5,7 @@ import AddSchedule from "../page/AddSchedule";
 import AllSchedule from "../page/AllSchedule";
 import SignUp from "./../page/SignUp";
 import SignIn from "./../page/SignIn";
+import UpdateSchedule from "../page/UpdateSchedule";
 
 export const router = createBrowserRouter([
   {
@@ -22,6 +23,12 @@ export const router = createBrowserRouter([
       {
         path: "/allSchedule",
         Component: AllSchedule,
+      },
+      {
+        path: "/updateSchedule/:id",
+        Component: UpdateSchedule,
+        loader: ({ params }) =>
+          fetch(`http://localhost:5000/schedule/${params.id}`),
       },
       {
         path: "/signUp",

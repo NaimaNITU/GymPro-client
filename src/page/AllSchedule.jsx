@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash, FaCheck } from "react-icons/fa"; // Import icons
+import { Link } from "react-router";
 import Swal from "sweetalert2";
 
 const AllSchedule = () => {
@@ -11,12 +12,7 @@ const AllSchedule = () => {
       .then((data) => setSchedules(data));
   }, []);
 
-  const handleUpdate = (id) => {
-    console.log("Update schedule:", id);
-  };
-
   const handleDelete = (id) => {
-    // console.log("Delete schedule:", id);
     // Add  delete logic here
     fetch(`http://localhost:5000/schedule/${id}`, {
       method: "DELETE",
@@ -74,13 +70,13 @@ const AllSchedule = () => {
                   <td className="border px-4 py-2">{schedule.date}</td>
                   <td className="border px-4 py-2">{schedule.time}</td>
                   <td className="border px-4 py-3 flex gap-2">
-                    <button
-                      onClick={() => handleUpdate(schedule._id)}
+                    <Link
+                      to={`/updateSchedule/${schedule._id}`}
                       className="text-blue-500 hover:text-blue-700"
                       title="Update"
                     >
                       <FaEdit />
-                    </button>
+                    </Link>
                     <button
                       onClick={() => handleDelete(schedule._id)}
                       className="text-red-500 hover:text-red-700"

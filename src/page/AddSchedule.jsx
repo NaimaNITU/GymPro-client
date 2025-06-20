@@ -11,7 +11,7 @@ const AddSchedule = () => {
       time: form.time.value,
     };
 
-    // now fetching data from api
+    // now send data to api
     fetch("http://localhost:5000/schedule", {
       method: "POST",
       headers: {
